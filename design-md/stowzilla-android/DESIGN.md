@@ -17,6 +17,8 @@
 
 The app lives on ruggedized handhelds and warehouse-floor phones. Assume bright overhead lighting (light theme default) and occasional dim-dock conditions (dark theme auto-switch). Touch targets must survive gloved hands.
 
+**Identity signal:** Cool blue primary palette — immediately distinguishable from the warm green/cream/orange customer apps. The temperature shift is the cue: cool = ops, warm = customer.
+
 ---
 
 ## 2. Color Palette & Roles
@@ -76,6 +78,21 @@ The app lives on ruggedized handhelds and warehouse-floor phones. Assume bright 
 | `status_unassigned` | `#E65100` | Needs assignment — deep orange |
 
 Status colors are used as-is in both themes. Pair with white (`#FFFFFF`) text/icons when used as chip/badge backgrounds. In outline-only contexts, use the status color for stroke and text on the current surface.
+
+### Environment Indicators
+
+Non-production builds display a persistent top-edge banner (32dp tall, full width, above the top app bar) so staff always know which environment they are using. Production has no banner — the absence of a banner is the signal.
+
+| Environment | Banner Background | Banner Text | Text Color |
+|-------------|------------------|-------------|------------|
+| Production | *none — no banner* | — | — |
+| UAT | `#F59E0B` (amber) | `UAT` | `#78350F` |
+| Dev | `#8B5CF6` (violet) | `DEV` | `#FFFFFF` |
+
+Rules:
+- Banner uses `labelMedium` typography, centered, uppercase, letter-spacing 2sp
+- Injected via `BuildConfig` field set by the build variant, never hardcoded as visible in release builds
+- Banner is non-scrollable — sits above the top app bar in the root `Scaffold`
 
 ---
 

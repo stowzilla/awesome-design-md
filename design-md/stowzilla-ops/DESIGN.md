@@ -13,6 +13,7 @@
 | Philosophy | Cloudscape provides the structural skeleton; custom CSS layers on brand identity. Complexity is acceptable when it serves efficiency. Every pixel earns its place by helping staff move faster through inventory, scheduling, and billing workflows. |
 | Light/Dark | Light-theme-first. White surfaces on a cool grey canvas. No dark mode. |
 | Personality | Calm teal accents on neutral ground. The interface stays out of the way — it's a tool, not a destination. Think "well-organized warehouse office" not "startup landing page." |
+| Identity signal | **Cool palette** — grey canvas, teal accent, no warm tones. Immediately distinguishable from the warm green/cream/orange customer apps. The temperature shift is the cue: cool = ops, warm = customer. |
 
 ---
 
@@ -53,6 +54,22 @@
 | Token | Value | Role |
 |-------|-------|------|
 | Input focus ring | `rgba(74, 121, 48, 0.1)` | Subtle green-tinted focus glow on custom inputs |
+
+### Environment Indicators
+
+Non-production environments display a persistent top-edge banner (32px tall, full width, above the header) so staff always know which environment they are using. Production has no banner — the absence of a banner is the signal.
+
+| Environment | Banner Background | Banner Text | CSS Variable |
+|-------------|------------------|-------------|--------------|
+| Production | *none — no banner* | — | `--env-banner: none` |
+| UAT | `#F59E0B` (amber) | `UAT` in `#78350F`, 700 weight | `--env-banner: #F59E0B` |
+| Dev | `#8B5CF6` (violet) | `DEV` in `#FFFFFF`, 700 weight | `--env-banner: #8B5CF6` |
+
+Rules:
+- The banner is injected by the deployment pipeline via an environment variable, not hardcoded in the app
+- Banner text is centered, uppercase, `12px` / 700 weight, letter-spacing `0.1em`
+- The banner does not scroll — it is fixed above the sticky header
+- On mobile, the banner compresses to 24px tall with `11px` text
 
 ---
 

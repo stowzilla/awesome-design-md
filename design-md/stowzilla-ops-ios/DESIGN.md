@@ -15,6 +15,7 @@
 | Motion | System-default SwiftUI transitions. No custom choreography. Speed over spectacle. |
 | Dark mode | Full support via SwiftUI semantic colors. All custom colors must resolve in both appearances. |
 | iOS feature adoption | Liquid Glass for visual hierarchy and layered surfaces. App Intents for Siri/Shortcuts integration. Foundation Models framework for on-device AI intake assistance. Visual Intelligence for camera-based item identification. |
+| Identity signal | **Cool blue palette** — system blues, no warm tones. Immediately distinguishable from the warm green/cream/orange customer app (Swiftzilla). The temperature shift is the cue: cool = ops, warm = customer. |
 
 The app is not a consumer product. It is a warehouse floor instrument. Every pixel earns its place by helping staff move faster through intake, scanning, labeling, and container management workflows.
 
@@ -65,6 +66,21 @@ enum Status {
     case selected   // .blue + Color.blue.opacity(0.2) bg
 }
 ```
+
+### Environment Indicators
+
+Non-production builds display a persistent capsule badge in the top-right corner of the navigation bar so staff always know which environment they are using. Production builds show nothing — the absence of a badge is the signal.
+
+| Environment | Badge Background | Badge Text | Text Color |
+|-------------|-----------------|------------|------------|
+| Production | *none — no badge* | — | — |
+| UAT | `#F59E0B` (amber) | `UAT` | `#78350F` |
+| Dev | `#8B5CF6` (violet) | `DEV` | `#FFFFFF` |
+
+Rules:
+- Badge uses `.caption2` font, `.bold` weight, `Capsule()` clip shape, 4pt vertical / 8pt horizontal padding
+- Injected via build configuration (`#if DEBUG` / environment variable), never hardcoded as visible in release builds
+- Badge is non-interactive and does not interfere with navigation
 
 ---
 

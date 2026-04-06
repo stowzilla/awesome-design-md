@@ -11,11 +11,12 @@
 | Mood | Warm, friendly, trustworthy — like handing your belongings to a neighbor you trust |
 | Density | Spacious. Generous whitespace, breathing room around every element |
 | Design philosophy | **Invisible simplicity** — zero cognitive load, no feature discovery required |
-| Palette inspiration | Nature-inspired: forest greens, golden yellows, warm oranges against a cream canvas |
+| Palette inspiration | Nature-inspired: bright leafy greens, golden yellows, warm oranges against a cream canvas |
 | Surface feel | Soft, paper-like warmth. Never cold or clinical |
 | Imagery | Photography-driven for inventory items. Real objects, natural light, no stock-photo sterility |
 | Motion | Subtle and purposeful. Cubic-bezier easing on transitions, never bouncy or playful |
 | Overall | The app should feel effortless — a customer should be able to schedule a pickup without thinking |
+| Identity signal | **Warm palette** — cream canvas, bright green, golden accents. Immediately distinguishable from the cool-toned ops tools. A customer should never mistake this for a staff interface, and vice versa. |
 
 ---
 
@@ -27,9 +28,9 @@
 |-------|-----|------|
 | `--background-color` | `#FFFDF5` | Page canvas. Warm cream — never pure white |
 | `--surface-color` | `#FFFFFF` | Cards, modals, header. Clean white against the cream canvas |
-| `--accent-color` | `#4A7930` | Primary interactive: buttons, links, active states. Forest green |
-| `--accent-dark` | `#5A9642` | Accent hover/emphasis. Slightly brighter green |
-| `--accent-light` | `#A4D17C` | Accent backgrounds, tags, soft highlights |
+| `--accent-color` | `#7AB858` | Primary interactive: buttons, links, active states. Stowzilla brand green |
+| `--accent-dark` | `#5E9A3E` | Accent hover/emphasis. Deeper green for pressed states |
+| `--accent-light` | `#B5D99C` | Accent backgrounds, tags, soft highlights |
 | `--secondary-color` | `#F7B32B` | Attention/highlight: badges, promotions, star ratings. Golden yellow |
 | `--secondary-dark` | `#E09B0D` | Secondary hover state |
 | `--tertiary-color` | `#FF8C42` | Warm orange. Alerts, urgency indicators, promotional callouts |
@@ -52,6 +53,22 @@
 |-------|-----------|------------|
 | Error | `#DC2626` | `rgba(220, 38, 38, 0.1)` |
 | Success | `#16A34A` | `rgba(34, 197, 94, 0.1)` |
+
+### Environment Indicators
+
+Non-production environments display a persistent top-edge banner (32px tall, full width, above the header) so staff and testers always know where they are. Production has no banner — the absence of a banner is the signal.
+
+| Environment | Banner Background | Banner Text | CSS Variable |
+|-------------|------------------|-------------|--------------|
+| Production | *none — no banner* | — | `--env-banner: none` |
+| UAT | `#F59E0B` (amber) | `UAT` in `#78350F`, 700 weight | `--env-banner: #F59E0B` |
+| Dev | `#8B5CF6` (violet) | `DEV` in `#FFFFFF`, 700 weight | `--env-banner: #8B5CF6` |
+
+Rules:
+- The banner is injected by the deployment pipeline via an environment variable, not hardcoded in the app
+- Banner text is centered, uppercase, `0.75rem` / 700 weight, letter-spacing `0.1em`
+- The banner does not scroll — it is fixed above the sticky header
+- On mobile, the banner compresses to 24px tall with `0.6875rem` text
 
 ---
 
@@ -91,7 +108,7 @@
 
 **Primary (accent)**
 ```
-background: var(--accent-color)        /* #4A7930 */
+background: var(--accent-color)        /* #7AB858 */
 color: #FFFFFF
 border-radius: 8px
 font-weight: 600
@@ -99,7 +116,7 @@ font-size: 0.875rem
 padding: 10px 20px
 border: none
 transition: background 0.2s ease
-hover: var(--accent-dark)              /* #5A9642 */
+hover: var(--accent-dark)              /* #5E9A3E */
 ```
 
 **CTA (high-commitment)**
@@ -117,7 +134,7 @@ background: transparent
 color: var(--accent-color)
 border: 1px solid var(--accent-color)
 border-radius: 8px
-hover-background: rgba(74, 121, 48, 0.1)
+hover-background: rgba(122, 184, 88, 0.1)
 ```
 
 ### Cards
@@ -150,19 +167,19 @@ font-size: 0.9375rem
 font-weight: 500
 border-radius: 6px
 padding: 8px 12px
-hover-background: rgba(74, 121, 48, 0.1)
+hover-background: rgba(122, 184, 88, 0.1)
 ```
 
 **Active nav link:**
 ```
-color: var(--accent-color)             /* #4A7930 */
+color: var(--accent-color)             /* #7AB858 */
 border-bottom: 3px solid var(--accent-color)
 ```
 
 ### Calendar Badge
 
 ```
-background: var(--accent-color)        /* #4A7930 */
+background: var(--accent-color)        /* #7AB858 */
 color: #FFFFFF
 border-radius: 9px
 font-size: 0.75rem
@@ -173,7 +190,7 @@ padding: 2px 8px
 ### Form Inputs
 
 - Uses AWS Cloudscape Design input components as base
-- Override focus ring to `var(--accent-color)` with `0 0 0 2px rgba(74, 121, 48, 0.25)`
+- Override focus ring to `var(--accent-color)` with `0 0 0 2px rgba(122, 184, 88, 0.25)`
 - Error state: border `#DC2626`, background `rgba(220, 38, 38, 0.1)`
 - Success state: border `#16A34A`, background `rgba(34, 197, 94, 0.1)`
 - Border radius: `8px` to match button system
@@ -311,7 +328,7 @@ z-4  Drawer / modal overlay    — modal shadow, z-index: 1100+
 ```
 Cream background:  #FFFDF5
 White surface:     #FFFFFF
-Forest green:      #4A7930  (primary accent)
+Forest green:      #7AB858  (primary accent)
 Golden yellow:     #F7B32B  (secondary)
 Warm orange:       #FF8C42  (tertiary — alerts only)
 Teal:              #2D9B9B  (informational)
@@ -328,7 +345,7 @@ Success green:     #16A34A
 > White card on cream background. 12px radius, 1px border `rgba(31,41,55,0.1)`. Photo fills top half. Item name in 1rem/600 weight below. Muted caption for date stored. Forest green "Request Delivery" button, 8px radius. Shadow on hover.
 
 **"Build the Stowzilla header"**
-> 80px tall, white background, soft shadow. Logo left. Nav links at 0.9375rem/500 weight with 6px radius hover state `rgba(74,121,48,0.1)`. Active link has forest green 3px bottom border. Hamburger at 768px breakpoint, 280px slide-out drawer.
+> 80px tall, white background, soft shadow. Logo left. Nav links at 0.9375rem/500 weight with 6px radius hover state `rgba(122,184,88,0.1)`. Active link has brand green 3px bottom border. Hamburger at 768px breakpoint, 280px slide-out drawer.
 
 **"Build a Stowzilla scheduling flow"**
 > Single-column form on cream canvas. Cloudscape date picker themed with forest green focus ring. Calendar badges: green bg, white text, 9px radius. One deep navy CTA at the bottom: "Confirm Pickup". Full-width on mobile, bottom-anchored.
@@ -339,7 +356,7 @@ Success green:     #16A34A
 ### Key Principles for Agents
 
 1. **Cream, not white** — the page is always `#FFFDF5`
-2. **Green is primary** — `#4A7930` for all standard interactions
+2. **Green is primary** — `#7AB858` for all standard interactions
 3. **Navy is commitment** — `#0B2C4A` only for final-step CTAs
 4. **Photography first** — item cards lead with real photos, not icons
 5. **One CTA per view** — never compete for attention

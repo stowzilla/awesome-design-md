@@ -11,19 +11,20 @@ The visual language draws from the Stowzilla web brand: warm forest greens, gold
 Built with Swift + SwiftUI + TCA (The Composable Architecture) v1.10.0, targeting iOS 17+. Images via Nuke 12.6.0. The architecture mirrors ops-ios (Core → Networking → Domain → UI via SPM) but the feature surface is radically smaller. AI-powered features like auto-naming items via Foundation Models should work invisibly — the customer never knows AI is involved, they just notice that things are easier than expected.
 
 **Key Characteristics:**
-- Nature-inspired warmth: Forest Green (`#4A7930`), Golden Yellow (`#F7B32B`), Warm Orange (`#FF8C42`) — not corporate, not cold
+- Nature-inspired warmth: Stowzilla Brand Green (`#7AB858`), Golden Yellow (`#F7B32B`), Warm Orange (`#FF8C42`) — not corporate, not cold
 - iOS-native to the bone: system backgrounds, Dynamic Type, SF Pro, system label colors — never fight the platform
 - Five-tab architecture: Dashboard, Inventory, Pickups, Returns, Profile — flat, no nested navigation mazes
 - Invisible AI: Foundation Models auto-name items, suggest categories — the customer never sees the word "AI"
 - Liquid Glass: inherit system defaults, never customize — let Apple handle the visual evolution
 - Extreme restraint: if a feature requires explanation, it's too complex for this app
 - TCA state management ensures every screen is a pure function of state — no hidden side effects, no surprise behaviors
+- **Warm identity signal**: the warm green/cream/orange palette is the customer fingerprint — immediately distinguishable from the cool-toned ops apps. A customer should never mistake this for a staff tool.
 
 ## 2. Color Palette & Roles
 
 ### Brand — Nature-Inspired Warmth
 
-- **Forest Green** (`#4A7930`): Primary brand accent. Matches the web app's `--accent-color`. Used for primary action buttons, active tab icons, success confirmations, and brand moments. This is the color customers associate with Stowzilla. Maps to SwiftUI `.green` variants where semantic meaning aligns.
+- **Brand Green** (`#7AB858`): Primary brand accent. Matches the web app's `--accent-color`. Used for primary action buttons, active tab icons, success confirmations, and brand moments. This is the color customers associate with Stowzilla. Maps to SwiftUI `.green` variants where semantic meaning aligns.
 - **Golden Yellow** (`#F7B32B`): Secondary accent. Scheduling highlights, pickup confirmations, "items ready" badges, and celebratory moments. Warm and optimistic — the color of "your stuff is on its way." Use sparingly to maintain signal strength.
 - **Warm Orange** (`#FF8C42`): Tertiary accent. Scheduling urgency, upcoming pickup reminders, and gentle attention-getters. Never alarming — this is "hey, heads up" not "something's wrong." Maps to SwiftUI `.orange` for warnings.
 - **Teal** (`#2D9B9B`): Informational accent. Tips, onboarding hints, and contextual help. Cool complement to the warm palette — used when the app needs to teach without lecturing.
@@ -52,6 +53,21 @@ Built with Swift + SwiftUI + TCA (The Composable Architecture) v1.10.0, targetin
 - Keychain service identifier: `com.stowzilla.customer`
 - API namespace: `/customer/*` endpoints
 - User model: simplified — no roles, no permissions, no admin flags
+
+### Environment Indicators
+
+Non-production builds display a persistent capsule badge in the top-right corner of the tab bar so testers always know which environment they are using. Production builds show nothing — the absence of a badge is the signal.
+
+| Environment | Badge Background | Badge Text | Text Color |
+|-------------|-----------------|------------|------------|
+| Production | *none — no badge* | — | — |
+| UAT | `#F59E0B` (amber) | `UAT` | `#78350F` |
+| Dev | `#8B5CF6` (violet) | `DEV` | `#FFFFFF` |
+
+Rules:
+- Badge uses `.caption2` font, `.bold` weight, `Capsule()` clip shape, 4pt vertical / 8pt horizontal padding
+- Injected via build configuration (`#if DEBUG` / environment variable), never hardcoded as visible in production
+- Badge is non-interactive and does not interfere with navigation
 
 ## 3. Typography Rules
 
@@ -98,7 +114,7 @@ Built with Swift + SwiftUI + TCA (The Composable Architecture) v1.10.0, targetin
 - Disabled state: `.opacity(0.4)`
 
 **Secondary Action (View Details, Edit Item)**
-- Background: Forest Green `#4A7930`
+- Background: Forest Green `#7AB858`
 - Text: `.white`, `.headline` weight
 - Corner radius: 12pt
 - Padding: 12pt vertical, horizontal padding 24pt
@@ -143,7 +159,7 @@ Built with Swift + SwiftUI + TCA (The Composable Architecture) v1.10.0, targetin
 - Status badge: pill shape, 6pt vertical / 12pt horizontal padding, caption text
   - Scheduled: Golden Yellow `#F7B32B` background, Deep Navy text
   - In Transit: Teal `#2D9B9B` background, white text
-  - Completed: Forest Green `#4A7930` background, white text
+  - Completed: Forest Green `#7AB858` background, white text
   - Cancelled: `.gray` background, `.secondary` text
 
 ### Navigation
@@ -156,7 +172,7 @@ Built with Swift + SwiftUI + TCA (The Composable Architecture) v1.10.0, targetin
   - Pickups: `truck.box`
   - Returns: `arrow.uturn.left.circle`
   - Profile: `person.circle`
-- Active tint: Forest Green `#4A7930`
+- Active tint: Forest Green `#7AB858`
 - Inactive tint: `.gray`
 - Labels: always visible (no icon-only tabs)
 
@@ -360,7 +376,7 @@ Depth in Swiftzilla is communicated through **background color layering**, not s
 
 ```
 Brand:
-  Forest Green:   #4A7930  (primary accent, active states, success)
+  Brand Green:    #7AB858  (primary accent, active states, success)
   Golden Yellow:  #F7B32B  (scheduling, confirmations, badges)
   Warm Orange:    #FF8C42  (reminders, gentle urgency)
   Teal:           #2D9B9B  (informational, tips, onboarding)
@@ -390,10 +406,10 @@ Text:
 > Create a SwiftUI view for [feature] in the Swiftzilla customer app. Use TCA `@Reducer` for state management. Background is `Color(.systemBackground)`. Cards use `Color(.secondarySystemBackground)` with 16pt corner radius and 16pt padding. Primary CTA is Deep Navy `#0B2C4A` with white `.headline` text, full width, 50pt tall, 12pt corner radius. All text uses SwiftUI text styles (`.title`, `.headline`, `.body`) — no hardcoded sizes. Support Dynamic Type. Navigation via `NavigationStack` push, creation flows via `.sheet`. Load images with Nuke `LazyImage`.
 
 **"Add an item card to a list"**
-> Create an item card as a `List` row. `HStack` layout: 80×80pt Nuke `LazyImage` thumbnail (corner radius 8pt, `.fill`) on the left, `VStack(alignment: .leading, spacing: 4)` with `.headline` item name and `.subheadline` + `.secondary` color metadata on the right, system chevron trailing. Background is `Color(.secondarySystemBackground)`. Tap navigates via `NavigationLink`. Swipe actions: Forest Green `#4A7930` for primary action, `.red` for delete with `.confirmationDialog`.
+> Create an item card as a `List` row. `HStack` layout: 80×80pt Nuke `LazyImage` thumbnail (corner radius 8pt, `.fill`) on the left, `VStack(alignment: .leading, spacing: 4)` with `.headline` item name and `.subheadline` + `.secondary` color metadata on the right, system chevron trailing. Background is `Color(.secondarySystemBackground)`. Tap navigates via `NavigationLink`. Swipe actions: Forest Green `#7AB858` for primary action, `.red` for delete with `.confirmationDialog`.
 
 **"Create a status badge"**
-> Build a pill-shaped status badge. `Text` with `.caption` font, `6pt` vertical and `12pt` horizontal padding, `Capsule()` clip shape. Colors by status: Scheduled = Golden Yellow `#F7B32B` background + Deep Navy `#0B2C4A` text. In Transit = Teal `#2D9B9B` background + white text. Completed = Forest Green `#4A7930` background + white text. Cancelled = `.gray` background + `.secondary` text.
+> Build a pill-shaped status badge. `Text` with `.caption` font, `6pt` vertical and `12pt` horizontal padding, `Capsule()` clip shape. Colors by status: Scheduled = Golden Yellow `#F7B32B` background + Deep Navy `#0B2C4A` text. In Transit = Teal `#2D9B9B` background + white text. Completed = Forest Green `#7AB858` background + white text. Cancelled = `.gray` background + `.secondary` text.
 
 **"Implement invisible AI item naming"**
 > When a customer adds a new item, use Foundation Models (iOS 26+) to suggest a name from the item photo. Show the suggestion as pre-filled text in the name field — no "AI suggested" label, no sparkle icon, no explanation. If the model is unavailable or confidence is low, leave the field empty. The customer should never know AI was involved. Gate behind `#available(iOS 26, *)` with empty fallback.
